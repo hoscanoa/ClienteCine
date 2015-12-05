@@ -13,10 +13,10 @@ urlpatterns = patterns('',
                        # url(r'^admin/', include(admin.site.urls)),
 
                        url(r'^$', 'cliente.views.index'),
-                       url(r'^logear/$', Logear.as_view()),
-                       url(r'^registrarCliente/$', RegistrarCliente.as_view()),
-                       url(r'^salir/$', Salir, name="salir"),
-                       url(r'cartelera/$', Cartelera, name="catelera"),
-                       
-                       url(r'^complejosPorCiudad/$', ComplejosPorCiudad , name="complejosPorCiudad"),
+                       url(r'logear/$', Logear.as_view()),
+                       url(r'registrarCliente/$', RegistrarCliente.as_view()),
+                       url(r'salir/$', Salir),
+                       url(r'cartelera/$', Cartelera),
+
+                       url(r'^complejosPorCiudad/$', ComplejosPorCiudad),
                        )
