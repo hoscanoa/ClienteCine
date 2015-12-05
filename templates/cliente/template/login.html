@@ -1,0 +1,61 @@
+<!-- open/close -->
+<div class="overlay overlay-hugeinc">
+
+    <section class="container">
+
+        <div class="col-sm-4 col-sm-offset-4">
+            <button type="button" class="overlay-close">Close</button>
+            <form id="login-form" class="login" novalidate=''>
+                {% csrf_token %}
+                <p class="login__title">
+                    Ingrese
+                    <br>
+                    <span class="login-edition">Bienvenido a AMovie</span>
+                </p>
+                
+                <p id="divErrorLogin" class="login__title" style="color:red; display:none;">
+                    <span  class="login-edition">Las credenciales son incorrectas</span>
+                </p>
+                
+                <div class="field-wrap">
+                    <input type='email' placeholder='Email' name='user-email' class="login__input">
+                    <input type='password' placeholder='Password' name='user-password' class="login__input">
+
+                    <label for='#informed' class='login__check-info'>&nbsp;</label>
+                </div>
+
+                <div class="login__control">
+                    <button type='submit' class="btn btn-md btn--warning btn--wider">Ingresar</button>
+                    <a href="#" class="login__tracker form__tracker" id="btn-register">¿No esta registrado?</a>
+                </div>
+            </form>
+            <form id="register-form" class="login" style="display:none;">
+                {% csrf_token %}
+                <p class="login__title">
+                    Registrarse
+                    <br>
+                    <span class="login-edition">Bienvenido a AMovie</span>
+                </p>
+                
+                <p id="divErrorRegister" class="login__title" style="color:red; display:none;">
+                    <span  class="login-edition">Los datos son incorrectos</span>
+                </p>
+
+                <div class="field-wrap">
+                    <input class="login__input" type="text" placeholder="DNI" name="user-dni" />
+                    <input class="login__input" type="text" placeholder="Nombre" name="user-nombres" />
+                    <input class="login__input" type="text" placeholder="Apellido Paterno" name="user-apellidoPaterno" />
+                    <input class="login__input" type="text" placeholder="Apellido Materno" name="user-apellidoMaterno" />
+                    <input class="login__input" type="text" placeholder="Celular" name="user-celular" />
+                    <input class="login__input" type="email" placeholder="Correo" name="user-email" />
+                    <input class="login__input" type="password" placeholder="Password" name="user-password" />
+                </div>
+                <div class="login__control">
+                    <button type='submit' class="btn btn-md btn--warning btn--wider">Registrarse</button>
+                    <a href="#" class="login__tracker form__tracker" id="btn-login">Iniciar sesion?</a>
+                </div>
+            </form>
+        </div>
+
+    </section>
+</div>
