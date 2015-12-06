@@ -94,7 +94,7 @@ def Cartelera(request):
     webService = suds.client.Client(servicio.URL_CIUDAD_WS)
     ciudades = json.loads(webService.service.listar())
 
-    return render_to_response('cliente/cartelera.html', locals(), context_instance=RequestContext(request))
+    return render_to_response(u'cliente/cartelera.html', locals(), context_instance=RequestContext(request))
 
 
 def ComplejosPorCiudad(request):
@@ -102,15 +102,9 @@ def ComplejosPorCiudad(request):
     fecha = request.GET['fecha']
 
     webService = suds.client.Client(servicio.URL_COMPLEJO_WS)
-
-    respuesta = str(webService.service.listarPorCiudad(idCiudad))
-    print respuesta
-    print type(respuesta)
-
-    repuesta = respuesta.replace("idComplejo", "key")
-    repuesta = respuesta.replace("nombre", "value")
-    print respuesta
+    respuesta = ""+webService.service.listarPorCiudad(idCiudad)
+    respuesta = respuesta.replace("idComplejo", "key")
+    respuesta = respuesta.replace("nombre", "value")
     complejos = json.loads(respuesta)
-
     response = json.dumps({'complejos': complejos})
     return HttpResponse(response, content_type="application/json")

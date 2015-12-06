@@ -26,7 +26,7 @@
             <h2 class="page-heading">Peliculas en cartelera</h2>
 
             <div class="select-area">
-                <form class="select" method='get'>
+                <form class="select">
                     <select name="idCiudad" id="idCiudad" class="select__sort" tabindex="0">
                         {% for ciudad in ciudades %}
                             <option value="{{ ciudad.idCiudad }}">{{ ciudad.nombre }}</option>
@@ -34,7 +34,7 @@
                     </select>
                 </form>
 
-                <form class="select select--cinema" method='get'>
+                <form class="select">
                     <select name="idComplejo" id="idComplejo" class="select__sort" tabindex="0">
                         <option value="" selected='selected'>--</option>
                     </select>
@@ -751,7 +751,7 @@
 
 {% endblock %}
 {% block scripts %}
-    <script type="text/javascript">
+    <script type="text/javascript" charset="UTF-8">
         function formatDate(date) {
             var dd = date.getDate();
             var mm = date.getMonth() + 1; //January is 0!
@@ -769,17 +769,81 @@
             return date;
         }
 
+        function init_MovieList() {
+            "use strict";
+
+            //1. Dropdown init
+            //select
+            $(".select__sort").selectbox({
+                onChange: function (val, inst) {
+                    $(inst.input[0]).children().each(function (item) {
+                        $(this).removeAttr('selected');
+                    })
+                    $(inst.input[0]).find('[value="' + val + '"]').attr('selected', 'selected');
+                }
+            });
+
+
+            //2. Datepicker init
+            $(".datepicker__input").datepicker({
+                showOtherMonths: true,
+                selectOtherMonths: true,
+                prevText: '<Ant',
+                nextText: 'Sig>',
+                currentText: 'Hoy',
+                showAnim: "fade",
+                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Juv', 'Vie', 'Sab'],
+                dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+                firstDay: 1
+            });
+
+            $(document).click(function (e) {
+                var ele = $(e.target);
+                if (!ele.hasClass("datepicker__input") && !ele.hasClass("ui-datepicker") && !ele.hasClass("ui-icon") && !$(ele).parent().parents(".ui-datepicker").length) {
+                    $(".datepicker__input").datepicker("hide");
+                }
+            });
+
+            //3. Rating scrore init
+            //Rating star
+            $('.score').raty({
+                width: 130,
+                score: 0,
+                path: 'images/rate/',
+                starOff: 'star-off.svg',
+                starOn: 'star-on.svg'
+            });
+
+
+            //5. Toggle function for additional content
+            //toggle timetable show
+            $('.movie__show-btn').click(function (ev) {
+                ev.preventDefault();
+
+                $(this).parents('.movie--preview').find('.time-select').slideToggle(500);
+            });
+
+            $('.time-select__item').click(function () {
+                $('.time-select__item').removeClass('active');
+                $(this).addClass('active');
+            });
+        }
+
+
         $(document).ready(function () {
-            init_MovieList();
+
             var today = new Date();
+
+            $("#idCiudad").selectbox();
 
             $("#idCiudad").selectbox({
                 onChange: function (val, inst) {
-                    console.log("entro");
-                    var idCiudad = val;
+                    $("#idCiudad")
                     var fecha = $('#datepicker').val();
-
-                    $.getJSON('/complejosPorCiudad', {idCiudad: idCiudad, fecha: fecha}, function (response) {
+                    $.getJSON('/complejosPorCiudad', {idCiudad: val, fecha: fecha}, function (response) {
                         llenarSelect($("#idComplejo"), response.complejos)
                     });
                 }
@@ -787,17 +851,8 @@
 
             $('#datepicker').val(formatDate(today));
 
-
-            var idCiudad = $('#idCiudad').val();
-            var fecha = $('#datepicker').val();
-
-            console.log(idCiudad);
-            console.log(fecha);
-
-            $.getJSON('/complejosPorCiudad', {idCiudad: idCiudad, fecha: fecha}, function (response) {
-                llenarSelect($("#idComplejo"), response.complejos)
-            });
-
-        });
+            init_MovieList();
+        })
+        ;
     </script>
 {% endblock %}

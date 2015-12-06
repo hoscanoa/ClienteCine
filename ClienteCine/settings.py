@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for ClienteCine project.
 
@@ -89,7 +90,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
-LANGUAGE_CODE = 'es-pe'
+LANGUAGE_CODE = 'es-mx'
 
 TIME_ZONE = 'America/Lima'
 
