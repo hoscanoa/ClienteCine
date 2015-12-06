@@ -1,0 +1,155 @@
+{% extends "cliente/template/base.html" %}
+
+{% block perfil %}
+    {% if not logeado %}
+        <div class="control-panel">
+            <a href="#" class="btn btn--sign login-window">Log in</a>
+        </div>
+    {% else %}
+        <div class="control-panel">
+            <div class="auth auth--home">
+                <a href="#" class="btn btn--sign btn--singin"><i class="fa fa-user" style="color:gray"></i> {{ nombre }}
+                </a>
+                <ul class="auth__function">
+                    <li><a href="perfil" class="auth__function-item">Perfil</a></li>
+                    <li><a href="salir" class="auth__function-item">Salir</a></li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <!-- Main content -->
+    <section class="container">
+        <div class="col-sm-12">
+            <h2 class="page-heading">Peliculas en cartelera</h2>
+
+            <div class="select-area">
+                <form class="select" method='get'>
+                    <select name="idCiudad" id="idCiudad" class="select__sort" tabindex="0">
+                        {% for ciudad in ciudades %}
+                            <option value="{{ ciudad.idCiudad }}">{{ ciudad.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+
+                <form class="select select--cinema" method='get'>
+                    <select name="idComplejo" id="idComplejo" class="select__sort" tabindex="0">
+                        {% for complejo in complejos %}
+                            <option value="{{ complejo.key }}">{{ complejo.value }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+
+                <div class="datepicker">
+                    <span class="datepicker__marker"><i class="fa fa-calendar"></i>Fecha</span>
+                    <input type="text" id="datepicker" value='{{ hoy }}'
+                           class="datepicker__input">
+                </div>
+
+            </div>
+
+            {% for pelicula in catelera %}
+
+                <!-- Movie preview item -->
+                <div class="movie movie--preview movie--full release">
+                    <div class="col-sm-3 col-md-2 col-lg-2">
+                        <div class="movie__images">
+                            <img alt='' src="{{ pelicula.imagen }}">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
+                        <a href='movie-page-full.html' class="movie__title link--huge">{{ pelicula.nombre }}</a>
+
+                        <p class="movie__time">{{ pelicula.duracion }} min</p>
+
+                        <p class="movie__option">
+                            <strong>País: </strong>{{ pelicula.pais }}
+                        </p>
+
+                        <p class="movie__option">
+                            <strong>Fecha de Estreno: </strong>{{ pelicula.fecha }}
+                        </p>
+
+                        <p class="movie__option">
+                            <strong>Director: </strong>{{ pelicula.director }}
+                        </p>
+
+                        <p class="movie__option">
+                            <strong>Actores: </strong>{{ pelicula.actores }}
+                        </p>
+
+                        <p class="movie__option">
+                            <strong>Sinopsis: </strong>{{ pelicula.sinopsis }}
+                        </p>
+
+                        <div class="movie__btns">
+                            <a href="/butacas" class="btn btn-md btn--warning">Reservar</a>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- Time table (choose film start time)-->
+                    <div class="time-select" style="display-block;">
+                        <div class="time-select__group group--first">
+                            <div class="col-sm-4">
+                                <p class="time-select__place"><strong>Horarios</strong></p>
+                            </div>
+                            <ul class="col-sm-8 items-wrap">
+                                {% for horarios in pelicula.carteleras %}
+                                    <li class="time-select__item" data-time='{{ horarios.horaInicio }}'
+                                        idCartelera='{{ horarios.idCartelera }}'>{{ horarios.horaInicio }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end time table-->
+                </div>
+                <hr>
+                <!-- end movie preview item -->
+            {% endfor %}
+        </div>
+    </section>
+
+    <div class="clearfix"></div>
+
+
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            init_MovieList();
+            $("#idComplejo").selectbox();
+            $("#idCiudad").selectbox({
+                onChange: function (val, inst) {
+                    var idCiudad = val;
+                    var fecha = $('#datepicker').val();
+
+                    $.getJSON('/complejosPorCiudad', {idCiudad: idCiudad, fecha: fecha}, function (response) {
+                        $("#idComplejo").selectbox("detach");
+                        llenarSelect($("#idComplejo"), response.complejos);
+                        $("#idComplejo").selectbox({
+                            onChange: function (val2, inst2) {
+                                var idCiudad = $('#idCiudad').val();
+                                var idComplejo = val2;
+                                var fecha = $('#datepicker').val();
+
+                                $.getJSON('/carteleraPorComplejosYPorCiudad', {
+                                    idCiudad: idCiudad,
+                                    idComplejo: idComplejo,
+                                    fecha: fecha,
+                                }, function (response) {
+                                    console.log("trae cartelera");
+                                });
+                            }
+                        });
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}
