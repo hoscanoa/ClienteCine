@@ -1098,25 +1098,46 @@ function init_Gallery() {
     });
 }
 
-
-
-/*
 function init_MovieList() {
     "use strict";
 
     //1. Dropdown init
     //select
-    $(".select__sort").selectbox({
-        onChange: function (val, inst) {
-            $(inst.input[0]).children().each(function (item) {
-                $(this).removeAttr('selected');
-            })
-            $(inst.input[0]).find('[value="' + val + '"]').attr('selected', 'selected');
-        }
-    });
+    //$(".select__sort").selectbox({
+    //    onChange: function (val, inst) {
+    //
+    //        $(inst.input[0]).children().each(function (item) {
+    //            $(this).removeAttr('selected');
+    //        })
+    //        $(inst.input[0]).find('[value="' + val + '"]').attr('selected', 'selected');
+    //    }
+    //
+    //});
 
 
     //2. Datepicker init
+
+
+    $.datepicker.regional['es'] = {
+        closeText: 'Cerrar',
+        prevText: '<Ant',
+        nextText: 'Sig>',
+        currentText: 'Hoy',
+        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sáb'],
+        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sá'],
+        weekHeader: 'Sm',
+        dateFormat: 'dd/mm/yy',
+        firstDay: 1,
+        isRTL: false,
+        showMonthAfterYear: false,
+        yearSuffix: ''
+    };
+    $.datepicker.setDefaults($.datepicker.regional['es']);
+
+/*
     $(".datepicker__input").datepicker({
         showOtherMonths: true,
         selectOtherMonths: true,
@@ -1124,7 +1145,6 @@ function init_MovieList() {
         nextText: 'Sig>',
         currentText: 'Hoy',
         showAnim: "fade",
-        currentText: 'Hoy',
         monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
         monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
         dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'],
@@ -1132,7 +1152,7 @@ function init_MovieList() {
         dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
         firstDay: 1
     });
-
+*/
     $(document).click(function (e) {
         var ele = $(e.target);
         if (!ele.hasClass("datepicker__input") && !ele.hasClass("ui-datepicker") && !ele.hasClass("ui-icon") && !$(ele).parent().parents(".ui-datepicker").length) {
@@ -1166,8 +1186,8 @@ function init_MovieList() {
         $(".movie--preview").show();
         $('.pagination').show();
 
-        /!*using the :not attribute and the filter class in it we are selecting
-         only the list items that don't have that class and hide them '*!/
+        /*using the :not attribute and the filter class in it we are selecting
+         only the list items that don't have that class and hide them '*/
         if (filter.toLowerCase() !== 'all') {
             $('.movie--preview:not(.' + filter + ')').hide();
             //Show pagination on filter = all;
@@ -1188,8 +1208,6 @@ function init_MovieList() {
         $(this).addClass('active');
     });
 }
-*/
-
 
 function init_MoviePage() {
     "use strict";

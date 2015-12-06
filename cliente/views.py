@@ -13,13 +13,15 @@ from django.core import serializers
 from django.http import HttpResponse
 import suds
 import json
+import time
+from util import *
 
 import mandrill
 
 from decimal import Decimal
 
 
-def index(request):
+def PaginaInicio(request):
     titulo = "Inicio"
     if 'cliente' in request.session and request.session['cliente'] is not None:
         logeado = True
@@ -82,7 +84,9 @@ class RegistrarCliente(TemplateView):
         return HttpResponse(response, content_type="application/json")
 
 
-def Cartelera(request):
+
+
+def PaginaCartelera(request):
     titulo = "Cartelera"
     if 'cliente' in request.session and request.session['cliente'] is not None:
         logeado = True
@@ -91,20 +95,25 @@ def Cartelera(request):
     else:
         logeado = False
 
+    # Ciudades
     webService = suds.client.Client(servicio.URL_CIUDAD_WS)
     ciudades = json.loads(webService.service.listar())
 
-    return render_to_response(u'cliente/cartelera.html', locals(), context_instance=RequestContext(request))
+    # Complejos de la primera ciudad
+    idCiudad = str(ciudades[0]["idCiudad"])
+    complejos = Complejos(idCiudad)
+
+    hoy = time.strftime("%d-%m-%y")
+
+    #Cartelera por defecto
+    catelera=Cartelera(complejos[0]["key"], '2015-12-06')
+    #catelera=Cartelera(complejos[0]["key"],  time.strftime("%y-%m-%d"))
+    return render_to_response('cliente/cartelera.html', locals(), context_instance=RequestContext(request))
 
 
 def ComplejosPorCiudad(request):
     idCiudad = request.GET['idCiudad']
     fecha = request.GET['fecha']
-
-    webService = suds.client.Client(servicio.URL_COMPLEJO_WS)
-    respuesta = ""+webService.service.listarPorCiudad(idCiudad)
-    respuesta = respuesta.replace("idComplejo", "key")
-    respuesta = respuesta.replace("nombre", "value")
-    complejos = json.loads(respuesta)
+    complejos = Complejos(idCiudad)
     response = json.dumps({'complejos': complejos})
     return HttpResponse(response, content_type="application/json")

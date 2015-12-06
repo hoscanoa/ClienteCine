@@ -26,7 +26,7 @@
             <h2 class="page-heading">Peliculas en cartelera</h2>
 
             <div class="select-area">
-                <form class="select">
+                <form class="select" method='get'>
                     <select name="idCiudad" id="idCiudad" class="select__sort" tabindex="0">
                         {% for ciudad in ciudades %}
                             <option value="{{ ciudad.idCiudad }}">{{ ciudad.nombre }}</option>
@@ -34,716 +34,84 @@
                     </select>
                 </form>
 
-                <form class="select">
+                <form class="select select--cinema" method='get'>
                     <select name="idComplejo" id="idComplejo" class="select__sort" tabindex="0">
-                        <option value="" selected='selected'>--</option>
+                        {% for complejo in complejos %}
+                            <option value="{{ complejo.key }}">{{ complejo.value }}</option>
+                        {% endfor %}
                     </select>
                 </form>
 
                 <div class="datepicker">
                     <span class="datepicker__marker"><i class="fa fa-calendar"></i>Fecha</span>
-                    <input type="text" id="datepicker" value=''
+                    <input type="text" id="datepicker" value='{{ hoy }}'
                            class="datepicker__input">
                 </div>
 
             </div>
 
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
+            {% for pelicula in catelera %}
 
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
-
-                    <p class="movie__time">105 min</p>
-
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
+                <!-- Movie preview item -->
+                <div class="movie movie--preview movie--full release">
+                    <div class="col-sm-3 col-md-2 col-lg-2">
+                        <div class="movie__images">
+                            <img alt='' src="{{ pelicula.imagen }}">
                         </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
                     </div>
-                </div>
-                <!-- end time table-->
 
-            </div>
-            <!-- end movie preview item -->
+                    <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
+                        <a href='movie-page-full.html' class="movie__title link--huge">{{ pelicula.nombre }}</a>
 
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
+                        <p class="movie__time">{{ pelicula.duracion }} min</p>
 
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
+                        <p class="movie__option">
+                            <strong>PaÃ­s: </strong>{{ pelicula.pais }}
+                        </p>
 
-                    <p class="movie__time">105 min</p>
+                        <p class="movie__option">
+                            <strong>Fecha de Estreno: </strong>{{ pelicula.fecha }}
+                        </p>
 
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
+                        <p class="movie__option">
+                            <strong>Director: </strong>{{ pelicula.director }}
+                        </p>
 
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
+                        <p class="movie__option">
+                            <strong>Actores: </strong>{{ pelicula.actores }}
+                        </p>
 
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
+                        <p class="movie__option">
+                            <strong>Sinopsis: </strong>{{ pelicula.sinopsis }}
+                        </p>
 
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
+                        <div class="movie__btns">
+                            <a href="/butacas" class="btn btn-md btn--warning">Reservar</a>
                         </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
                     </div>
-                </div>
-                <!-- end time table-->
 
-            </div>
-            <!-- end movie preview item -->
+                    <div class="clearfix"></div>
 
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
-
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
-
-                    <p class="movie__time">105 min</p>
-
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
+                    <!-- Time table (choose film start time)-->
+                    <div class="time-select" style="display-block;">
+                        <div class="time-select__group group--first">
+                            <div class="col-sm-4">
+                                <p class="time-select__place"><strong>Horarios</strong></p>
+                            </div>
+                            <ul class="col-sm-8 items-wrap">
+                                {% for horarios in pelicula.carteleras %}
+                                    <li class="time-select__item" data-time='{{ horarios.horaInicio }}'
+                                        idCartelera='{{ horarios.idCartelera }}'>{{ horarios.horaInicio }}</li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
                     </div>
+                    <!-- end time table-->
                 </div>
-                <!-- end time table-->
-
-            </div>
-            <!-- end movie preview item -->
-
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
-
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
-
-                    <p class="movie__time">105 min</p>
-
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
-                        </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- end time table-->
-
-            </div>
-            <!-- end movie preview item -->
-
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
-
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
-
-                    <p class="movie__time">105 min</p>
-
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
-                        </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- end time table-->
-
-            </div>
-            <!-- end movie preview item -->
-
-            <!-- Movie preview item -->
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
-
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
-
-                    <p class="movie__time">105 min</p>
-
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
-                        </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- end time table-->
-
-            </div>
-            <!-- end movie preview item -->
-
-            <!-- Movie preview item -->
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
-
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
-
-                    <p class="movie__time">105 min</p>
-
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
-                        </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- end time table-->
-
-            </div>
-            <!-- end movie preview item -->
-
-            <!-- Movie preview item -->
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
-
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
-
-                    <p class="movie__time">105 min</p>
-
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
-                        </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- end time table-->
-
-            </div>
-            <!-- end movie preview item -->
-
-            <!-- Movie preview item -->
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
-
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
-
-                    <p class="movie__time">105 min</p>
-
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
-                        </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- end time table-->
-
-            </div>
-            <!-- end movie preview item -->
-
-            <!-- Movie preview item -->
-            <div class="movie movie--preview movie--full release">
-                <div class="col-sm-3 col-md-2 col-lg-2">
-                    <div class="movie__images">
-                        <img alt='' src="http://placehold.it/380x600">
-                    </div>
-                </div>
-
-                <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                    <a href='movie-page-full.html' class="movie__title link--huge">Last
-                        Vegas (2013)</a>
-
-                    <p class="movie__time">105 min</p>
-
-                    <p class="movie__option">
-                        <strong>Country: </strong><a href="#">USA</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Category: </strong><a href="#">Comady</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Release date: </strong>November 1, 2013
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Director: </strong><a href="#">Jon Turteltaub</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Actors: </strong><a href="#">Robert De Niro</a>, <a
-                            href="#">Michael Douglas</a>, <a href="#">Morgan Freeman</a>, <a
-                            href="#">Kevin Kline</a>, <a href="#">Mary Steenburgen</a>, <a
-                            href="#">Jerry Ferrara</a>, <a href="#">Romany Malco</a> <a
-                            href="#">...</a>
-                    </p>
-
-                    <p class="movie__option">
-                        <strong>Age restriction: </strong><a href="#">13</a>
-                    </p>
-
-                    <div class="movie__btns">
-                        <a href="butacas.jsp" class="btn btn-md btn--warning">Reservar</a>
-                    </div>
-                </div>
-
-                <div class="clearfix"></div>
-
-                <!-- Time table (choose film start time)-->
-                <div class="time-select" style="display-block;">
-                    <div class="time-select__group group--first">
-                        <div class="col-sm-4">
-                            <p class="time-select__place">Cineworld</p>
-                        </div>
-                        <ul class="col-sm-8 items-wrap">
-                            <li class="time-select__item" data-time='09:40'>09:40</li>
-                            <li class="time-select__item" data-time='13:45'>13:45</li>
-                            <li class="time-select__item active" data-time='15:45'>15:45</li>
-                            <li class="time-select__item" data-time='19:50'>19:50</li>
-                            <li class="time-select__item" data-time='21:50'>21:50</li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- end time table-->
-
-            </div>
-            <!-- end movie preview item -->
-
+                <hr>
+                <!-- end movie preview item -->
+            {% endfor %}
         </div>
-
     </section>
 
     <div class="clearfix"></div>
@@ -751,108 +119,37 @@
 
 {% endblock %}
 {% block scripts %}
-    <script type="text/javascript" charset="UTF-8">
-        function formatDate(date) {
-            var dd = date.getDate();
-            var mm = date.getMonth() + 1; //January is 0!
-            var yyyy = date.getFullYear();
-
-            if (dd < 10) {
-                dd = '0' + dd
-            }
-
-            if (mm < 10) {
-                mm = '0' + mm
-            }
-
-            date = dd + '-' + mm + '-' + yyyy;
-            return date;
-        }
-
-        function init_MovieList() {
-            "use strict";
-
-            //1. Dropdown init
-            //select
-            $(".select__sort").selectbox({
-                onChange: function (val, inst) {
-                    $(inst.input[0]).children().each(function (item) {
-                        $(this).removeAttr('selected');
-                    })
-                    $(inst.input[0]).find('[value="' + val + '"]').attr('selected', 'selected');
-                }
-            });
-
-
-            //2. Datepicker init
-            $(".datepicker__input").datepicker({
-                showOtherMonths: true,
-                selectOtherMonths: true,
-                prevText: '<Ant',
-                nextText: 'Sig>',
-                currentText: 'Hoy',
-                showAnim: "fade",
-                monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-                monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
-                dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Juv', 'Vie', 'Sab'],
-                dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-                firstDay: 1
-            });
-
-            $(document).click(function (e) {
-                var ele = $(e.target);
-                if (!ele.hasClass("datepicker__input") && !ele.hasClass("ui-datepicker") && !ele.hasClass("ui-icon") && !$(ele).parent().parents(".ui-datepicker").length) {
-                    $(".datepicker__input").datepicker("hide");
-                }
-            });
-
-            //3. Rating scrore init
-            //Rating star
-            $('.score').raty({
-                width: 130,
-                score: 0,
-                path: 'images/rate/',
-                starOff: 'star-off.svg',
-                starOn: 'star-on.svg'
-            });
-
-
-            //5. Toggle function for additional content
-            //toggle timetable show
-            $('.movie__show-btn').click(function (ev) {
-                ev.preventDefault();
-
-                $(this).parents('.movie--preview').find('.time-select').slideToggle(500);
-            });
-
-            $('.time-select__item').click(function () {
-                $('.time-select__item').removeClass('active');
-                $(this).addClass('active');
-            });
-        }
-
+    <script type="text/javascript">
 
         $(document).ready(function () {
-
-            var today = new Date();
-
-            $("#idCiudad").selectbox();
-
+            init_MovieList();
+            $("#idComplejo").selectbox();
             $("#idCiudad").selectbox({
                 onChange: function (val, inst) {
-                    $("#idCiudad")
+                    var idCiudad = val;
                     var fecha = $('#datepicker').val();
-                    $.getJSON('/complejosPorCiudad', {idCiudad: val, fecha: fecha}, function (response) {
-                        llenarSelect($("#idComplejo"), response.complejos)
+
+                    $.getJSON('/complejosPorCiudad', {idCiudad: idCiudad, fecha: fecha}, function (response) {
+                        $("#idComplejo").selectbox("detach");
+                        llenarSelect($("#idComplejo"), response.complejos);
+                        $("#idComplejo").selectbox({
+                            onChange: function (val2, inst2) {
+                                var idCiudad = $('#idCiudad').val();
+                                var idComplejo = val2;
+                                var fecha = $('#datepicker').val();
+
+                                $.getJSON('/carteleraPorComplejosYPorCiudad', {
+                                    idCiudad: idCiudad,
+                                    idComplejo: idComplejo,
+                                    fecha: fecha,
+                                }, function (response) {
+                                    console.log("trae cartelera");
+                                });
+                            }
+                        });
                     });
                 }
             });
-
-            $('#datepicker').val(formatDate(today));
-
-            init_MovieList();
-        })
-        ;
+        });
     </script>
 {% endblock %}

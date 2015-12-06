@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
-from .views import index, Logear, RegistrarCliente, Salir, Cartelera, ComplejosPorCiudad
+from .views import PaginaInicio, Logear, RegistrarCliente, Salir, PaginaCartelera, ComplejosPorCiudad
 
 urlpatterns = patterns('',
                        # Examples:
@@ -13,11 +13,11 @@ urlpatterns = patterns('',
                        # Uncomment the next line to enable the admin:
                        # url(r'^admin/', include(admin.site.urls)),
 
-                       url(r'^$', 'cliente.views.index'),
+                       url(r'^$', PaginaInicio),
                        url(r'logear/$', Logear.as_view()),
                        url(r'registrarCliente/$', RegistrarCliente.as_view()),
                        url(r'salir/$', Salir),
-                       url(r'cartelera/$', Cartelera),
+                       url(r'cartelera/$', PaginaCartelera),
 
                        url(r'^complejosPorCiudad/$', ComplejosPorCiudad),
                        )
