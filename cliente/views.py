@@ -84,6 +84,37 @@ class RegistrarCliente(TemplateView):
         return HttpResponse(response, content_type="application/json")
 
 
+class ActualizarCliente(TemplateView):
+    def post(self, request, *args, **kwargs):
+
+        webService = suds.client.Client(servicio.URL_CLIENTE_WS)
+        cliente = request.session['cliente']
+        respuesta = webService.service.buscar(cliente["dni"])
+        cliente = json.loads(respuesta)
+
+        dni = request.POST['user-dni']
+        nombres = request.POST['user-nombres']
+        apellidoPaterno = request.POST['user-apellidoPaterno']
+        apellidoMaterno = request.POST['user-apellidoMaterno']
+        celular = request.POST['user-celular']
+        email = request.POST['user-email']
+        password = request.POST['user-password']
+
+        if len(password)>0:
+            cliente = {"idCliente": cliente["idCliente"], "dni": dni, "nombres": nombres, "apellidoPaterno": apellidoPaterno,
+                   "apellidoMaterno": apellidoMaterno, "celular": celular, "email": email, "password": password}
+        else:
+            cliente = {"idCliente": cliente["idCliente"], "dni": dni, "nombres": nombres, "apellidoPaterno": apellidoPaterno,
+                   "apellidoMaterno": apellidoMaterno, "celular": celular, "email": email, "password": "1234"}
+
+        webService = suds.client.Client(servicio.URL_CLIENTE_WS)
+        respuesta = webService.service.actualizar(json.dumps(cliente))
+
+        if respuesta is not None and int(respuesta) > 0:
+            data = json.loads(respuesta)
+            request.session['cliente'] = cliente
+        response = json.dumps({'resultado': data})
+        return HttpResponse(response, content_type="application/json")
 
 
 def PaginaCartelera(request):
@@ -105,9 +136,9 @@ def PaginaCartelera(request):
 
     hoy = time.strftime("%d-%m-%y")
 
-    #Cartelera por defecto
-    catelera=Cartelera(complejos[0]["key"], '2015-12-06')
-    #catelera=Cartelera(complejos[0]["key"],  time.strftime("%y-%m-%d"))
+    # Cartelera por defecto
+    catelera = Cartelera(complejos[0]["key"], '2015-12-06')
+    # catelera=Cartelera(complejos[0]["key"],  time.strftime("%y-%m-%d"))
     return render_to_response('cliente/cartelera.html', locals(), context_instance=RequestContext(request))
 
 
@@ -117,3 +148,51 @@ def ComplejosPorCiudad(request):
     complejos = Complejos(idCiudad)
     response = json.dumps({'complejos': complejos})
     return HttpResponse(response, content_type="application/json")
+
+
+def PaginaButacas(request):
+    titulo = "Butacas"
+    if 'cliente' in request.session and request.session['cliente'] is not None:
+        logeado = True
+        cliente = request.session['cliente']
+        nombre = cliente["nombres"]
+    else:
+        logeado = False
+
+    return render_to_response('cliente/butacas.html', locals(), context_instance=RequestContext(request))
+
+
+def PaginaReservacion(request):
+    titulo = "Reservacion"
+    if 'cliente' in request.session and request.session['cliente'] is not None:
+        logeado = True
+        cliente = request.session['cliente']
+        nombre = cliente["nombres"]
+    else:
+        logeado = False
+
+    return render_to_response('cliente/reservacion.html', locals(), context_instance=RequestContext(request))
+
+
+def PaginaConfirmacion(request):
+    titulo = "Confirmación"
+    if 'cliente' in request.session and request.session['cliente'] is not None:
+        logeado = True
+        cliente = request.session['cliente']
+        nombre = cliente["nombres"]
+    else:
+        logeado = False
+
+    return render_to_response('cliente/confirmacion.html', locals(), context_instance=RequestContext(request))
+
+
+def PaginaProfile(request):
+    titulo = "Perfil"
+    if 'cliente' in request.session and request.session['cliente'] is not None:
+        logeado = True
+        cliente = request.session['cliente']
+        nombre = cliente["nombres"]
+        return render_to_response('cliente/profile.html', locals(), context_instance=RequestContext(request))
+    else:
+        logeado = False
+        return PaginaInicio(request)

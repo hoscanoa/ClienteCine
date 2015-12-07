@@ -1,0 +1,92 @@
+{% extends "cliente/template/base.html" %}
+{% load static %}
+{% block perfil %}
+    {% if not logeado %}
+        <div class="control-panel">
+            <a href="#" class="btn btn--sign login-window">Log in</a>
+        </div>
+    {% else %}
+        <div class="control-panel">
+            <div class="auth auth--home">
+                <a href="#" class="btn btn--sign btn--singin"><i class="fa fa-user" style="color:gray"></i> {{ nombre }}
+                </a>
+                <ul class="auth__function">
+                    <li><a href="perfil" class="auth__function-item">Perfil</a></li>
+                    <li><a href="salir" class="auth__function-item">Salir</a></li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <!-- Main content -->
+
+    <section class="container">
+        <div class="order-container">
+            <div class="order">
+                <img class="order__images" alt='' src="{% static "images/tickets.png" %}">
+
+                <p class="order__title">
+                    Gracias <br>
+                    <span class="order__descript">Termino satisfactoriamente su proceso</span>
+                </p>
+            </div>
+
+            <div class="ticket">
+                <div class="ticket-position">
+                    <div class="ticket__indecator indecator--pre">
+                        <div class="indecator-text pre--text">Ticket online</div>
+                    </div>
+                    <div class="ticket__inner">
+
+                        <div class="ticket-secondary">
+							<span class="ticket__item">Ticket number <strong
+                                    class="ticket__number">a126bym4</strong></span> <span
+                                class="ticket__item ticket__date">25/10/2013</span> <span
+                                class="ticket__item ticket__time">17:45</span> <span
+                                class="ticket__item">Cinema: <span class="ticket__cinema">Cineworld</span></span>
+							<span class="ticket__item">Hall: <span
+                                    class="ticket__hall">Visconti</span></span> <span
+                                class="ticket__item ticket__price">price: <strong
+                                class="ticket__cost">$60</strong></span>
+                        </div>
+
+                        <div class="ticket-primery">
+							<span class="ticket__item ticket__item--primery ticket__film">Film<br>
+							<strong class="ticket__movie">The Fifth Estate (2013)</strong></span> <span
+                                class="ticket__item ticket__item--primery">Sits: <span
+                                class="ticket__place">11F, 12F, 13F</span></span>
+                        </div>
+
+
+                    </div>
+                    <div class="ticket__indecator indecator--post">
+                        <div class="indecator-text post--text">online ticket</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ticket-control">
+                <a id="btnPrint" href="#" target="_blank" class="watchlist list--print">Imprimir</a>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="clearfix"></div>
+
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            init_MovieList();
+
+            $('#btnPrint').on('click', function () {
+                window.print();
+                return false;
+            })
+        });
+    </script>
+{% endblock %}

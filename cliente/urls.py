@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
-from .views import PaginaInicio, Logear, RegistrarCliente, Salir, PaginaCartelera, ComplejosPorCiudad
+from .views import PaginaInicio, Logear, RegistrarCliente, \
+    Salir, PaginaCartelera, ComplejosPorCiudad, PaginaButacas, \
+    PaginaReservacion, PaginaConfirmacion, PaginaProfile, ActualizarCliente
 
 urlpatterns = patterns('',
                        # Examples:
@@ -16,8 +18,17 @@ urlpatterns = patterns('',
                        url(r'^$', PaginaInicio),
                        url(r'logear/$', Logear.as_view()),
                        url(r'registrarCliente/$', RegistrarCliente.as_view()),
+                       url(r'actualizarCliente/$', ActualizarCliente.as_view()),
+
                        url(r'salir/$', Salir),
                        url(r'cartelera/$', PaginaCartelera),
 
                        url(r'^complejosPorCiudad/$', ComplejosPorCiudad),
+
+                       url(r'cartelera/butacas/$', PaginaButacas),
+                       url(r'cartelera/butacas/reservacion/$', PaginaReservacion),
+                       url(r'cartelera/butacas/reservacion/confirmacion/$', PaginaConfirmacion),
+
+                       url(r'profile/$', PaginaProfile),
+
                        )

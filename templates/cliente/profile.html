@@ -1,0 +1,90 @@
+{% extends "cliente/template/base.html" %}
+{% block perfil %}
+    {% if not logeado %}
+        <div class="control-panel">
+            <a href="#" class="btn btn--sign login-window">Log in</a>
+        </div>
+    {% else %}
+        <div class="control-panel">
+            <div class="auth auth--home">
+                <a href="#" class="btn btn--sign btn--singin"><i class="fa fa-user" style="color:gray"></i> {{ nombre }}
+                </a>
+                <ul class="auth__function">
+                    <li><a href="perfil" class="auth__function-item">Perfil</a></li>
+                    <li><a href="salir" class="auth__function-item">Salir</a></li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <!-- Main content -->
+    <div class="clearfix"></div>
+    <!-- Main content -->
+    <form id="profile-form" class="login">
+        {% csrf_token %}
+        <p class="login__title">
+            {{ titulo }}
+            <br>
+            <span class="login-edition">Bienvenido a AMovie</span>
+        </p>
+
+        <p id="divErrorRegister" class="login__title" style="color:red; display:none;">
+            <span class="login-edition">Los datos son incorrectos</span>
+        </p>
+
+        <div class="field-wrap">
+            <input class="login__input" type="text" placeholder="DNI" name="user-dni" value="{{ cliente.dni }}"/>
+            <input class="login__input" type="text" placeholder="Nombre" name="user-nombres"
+                   value="{{ cliente.nombres }}"/>
+            <input class="login__input" type="text" placeholder="Apellido Paterno" name="user-apellidoPaterno"
+                   value="{{ cliente.apellidoPaterno }}"/>
+            <input class="login__input" type="text" placeholder="Apellido Materno" name="user-apellidoMaterno"
+                   value="{{ cliente.apellidoMaterno }}"/>
+            <input class="login__input" type="text" placeholder="Celular" name="user-celular"
+                   value="{{ cliente.celular }}"/>
+            <input class="login__input" type="email" placeholder="Correo" name="user-email"
+                   value="{{ cliente.email }}"/>
+            <input class="login__input" type="password" placeholder="Password" name="user-password"
+                   value=""/>
+        </div>
+        <div class="login__control">
+            <button type='submit' class="btn btn-md btn--warning btn--wider">Grabar Cambios</button>
+        </div>
+    </form>
+
+    <div class="clearfix"></div>
+
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#profile-form").submit(function (event) {
+                $("#divErrorRegister").hide();
+                $.ajax({
+                            data: $("#profile-form").serialize(),
+                            url: 'actualizarCliente/',
+                            type: 'post',
+                            dataType: 'json',
+                            success: function (response) {
+                                if (response['resultado'] > 0) {
+                                    setTimeout(function () {
+                                                location.reload();
+                                            }
+                                            , 0);
+                                }
+                                else {
+                                    $("#divErrorRegister").show();
+                                }
+                            }
+                        }
+                );
+                return false;
+            });
+        });
+
+
+    </script>
+{% endblock %}
