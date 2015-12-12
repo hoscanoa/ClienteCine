@@ -4,18 +4,13 @@
     <file url="file://$PROJECT_DIR$/static/js/util.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/butacas.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/cartelera.html" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/templates/cliente/cartelera.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/confirmacion.html" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/templates/cliente/inicio.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/inicio.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/profile.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/reservacion.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/template/base.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/template/estilos.html" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/templates/cliente/template/estilos.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/template/footer.html" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/templates/cliente/template/footer.html" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/templates/cliente/template/librerias.html" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/templates/cliente/template/librerias.html" charset="UTF-8" />
   </component>
 </project>
