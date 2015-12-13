@@ -14,6 +14,7 @@ from django.http import HttpResponse
 import suds
 import json
 import time
+import datetime
 from util import *
 
 import mandrill
@@ -100,12 +101,14 @@ class ActualizarCliente(TemplateView):
         email = request.POST['user-email']
         password = request.POST['user-password']
 
-        if len(password)>0:
-            cliente = {"idCliente": cliente["idCliente"], "dni": dni, "nombres": nombres, "apellidoPaterno": apellidoPaterno,
-                   "apellidoMaterno": apellidoMaterno, "celular": celular, "email": email, "password": password}
+        if len(password) > 0:
+            cliente = {"idCliente": cliente["idCliente"], "dni": dni, "nombres": nombres,
+                       "apellidoPaterno": apellidoPaterno,
+                       "apellidoMaterno": apellidoMaterno, "celular": celular, "email": email, "password": password}
         else:
-            cliente = {"idCliente": cliente["idCliente"], "dni": dni, "nombres": nombres, "apellidoPaterno": apellidoPaterno,
-                   "apellidoMaterno": apellidoMaterno, "celular": celular, "email": email, "password": "1234"}
+            cliente = {"idCliente": cliente["idCliente"], "dni": dni, "nombres": nombres,
+                       "apellidoPaterno": apellidoPaterno,
+                       "apellidoMaterno": apellidoMaterno, "celular": celular, "email": email, "password": "1234"}
 
         webService = suds.client.Client(servicio.URL_CLIENTE_WS)
         respuesta = webService.service.actualizar(json.dumps(cliente))
@@ -130,15 +133,29 @@ def PaginaCartelera(request):
     webService = suds.client.Client(servicio.URL_CIUDAD_WS)
     ciudades = json.loads(webService.service.listar())
 
+    if 'idCiudad' in request.GET:
+        idCiudad = request.GET['idCiudad']
+    else:
+        idCiudad = str(ciudades[0]["idCiudad"])
+
     # Complejos de la primera ciudad
-    idCiudad = str(ciudades[0]["idCiudad"])
     complejos = Complejos(idCiudad)
 
-    hoy = time.strftime("%d-%m-%y")
+    if 'idComplejo' in request.GET:
+        idComplejo = int(request.GET['idComplejo'])
+    else:
+        idComplejo = complejos[0]["idComplejo"]
+
+    if 'fecha' in request.GET:
+        fecha = request.GET['fecha']
+        f = time.strptime(fecha, "%d/%m/%Y")
+        fechaServicio = fechaServicio = str(f[0]) + "-" + str(f[1]) + "-" + str(f[2])
+    else:
+        fecha = time.strftime("%d/%m/%Y")
+        fechaServicio = time.strftime("%y-%m-%d")
 
     # Cartelera por defecto
-    catelera = Cartelera(complejos[0]["key"], '2015-12-06')
-    # catelera=Cartelera(complejos[0]["key"],  time.strftime("%y-%m-%d"))
+    catelera = Cartelera(idComplejo, fechaServicio)
     return render_to_response('cliente/cartelera.html', locals(), context_instance=RequestContext(request))
 
 

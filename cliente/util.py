@@ -28,8 +28,6 @@ def send_mail(template_name, email_to, context):
 def Complejos(idCiudad):
     webService = suds.client.Client(servicio.URL_COMPLEJO_WS)
     respuesta = "" + webService.service.listarPorCiudad(idCiudad)
-    respuesta = respuesta.replace("idComplejo", "key")
-    respuesta = respuesta.replace("nombre", "value")
     respuesta = respuesta.replace(" ", "_")
     return json.loads(respuesta)
 

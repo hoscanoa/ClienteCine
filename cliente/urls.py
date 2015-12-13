@@ -21,7 +21,7 @@ urlpatterns = patterns('',
                        url(r'actualizarCliente/$', ActualizarCliente.as_view()),
 
                        url(r'salir/$', Salir),
-                       url(r'cartelera/$', PaginaCartelera),
+                       url(r'cartelera/', PaginaCartelera),
 
                        url(r'^complejosPorCiudad/$', ComplejosPorCiudad),
 
