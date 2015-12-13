@@ -82,6 +82,13 @@ class RegistrarCliente(TemplateView):
             request.session['cliente'] = cliente
             logeado = True
         response = json.dumps({'logeado': logeado})
+
+        try:
+            send_mail('Sistemas Distribuidos - Registro Nuevo Cliente', cliente["email"], context={'nombre': cliente["nombres"]})
+        except:
+            print 'falló envio de correo'
+            raise
+
         return HttpResponse(response, content_type="application/json")
 
 
@@ -136,6 +143,8 @@ def PaginaCartelera(request, idCiudad, idComplejo, fecha):
     if int(idCiudad) == 0:
         idCiudad = str(ciudades[0]["idCiudad"])
 
+    request.session['idCiudad'] = idCiudad
+
     # Complejos de la primera ciudad
     complejos = Complejos(idCiudad)
 
@@ -157,13 +166,13 @@ def PaginaCartelera(request, idCiudad, idComplejo, fecha):
 
 def ComplejosPorCiudad(request):
     idCiudad = request.GET['idCiudad']
-    fecha = request.GET['fecha']
     complejos = Complejos(idCiudad)
     response = json.dumps({'complejos': complejos})
+
     return HttpResponse(response, content_type="application/json")
 
 
-def PaginaButacas(request, fecha, idSala, hora):
+def PaginaButacas(request, fecha, idSala, hora, idCartelera):
     titulo = "Butacas"
     if 'cliente' in request.session and request.session['cliente'] is not None:
         logeado = True
@@ -171,33 +180,39 @@ def PaginaButacas(request, fecha, idSala, hora):
         nombre = cliente["nombres"]
     else:
         logeado = False
-
+    request.session['fechaNormal'] = fecha
     fecha = time.strptime(fecha, "%d/%m/%Y")
-    fecha=str(fecha[0])+'-'+str(fecha[1])+'-'+str(fecha[2])
+
+    fecha = str(fecha[0]) + '-' + str(fecha[1]) + '-' + str(fecha[2])
+    request.session['fechaBD'] = fecha
     idSala = int(idSala)
+
+    request.session['idCartelera'] = idCartelera
+
+    request.session['hora'] = hora
 
     ocupados = ButacasOcupadas(fecha, idSala, hora)
 
-    ListaA=tuple('A'+str(i) for i in range(2,18))
+    ListaA = tuple('A' + str(i) for i in range(2, 18))
 
-    ListaB=tuple('B'+str(i) for i in range(1,19))
-    ListaC=tuple('C'+str(i) for i in range(1,19))
-    ListaD=tuple('D'+str(i) for i in range(1,19))
-    ListaE=tuple('E'+str(i) for i in range(1,19))
-    ListaF=tuple('F'+str(i) for i in range(1,19))
-    ListaG=tuple('G'+str(i) for i in range(1,19))
+    ListaB = tuple('B' + str(i) for i in range(1, 19))
+    ListaC = tuple('C' + str(i) for i in range(1, 19))
+    ListaD = tuple('D' + str(i) for i in range(1, 19))
+    ListaE = tuple('E' + str(i) for i in range(1, 19))
+    ListaF = tuple('F' + str(i) for i in range(1, 19))
+    ListaG = tuple('G' + str(i) for i in range(1, 19))
 
-    ListaI=tuple('I'+str(i) for i in range(3,17))
+    ListaI = tuple('I' + str(i) for i in range(3, 17))
 
-    ListaJ=tuple('J'+str(i) for i in range(5,15))
-    ListaK=tuple('K'+str(i) for i in range(5,15))
+    ListaJ = tuple('J' + str(i) for i in range(5, 15))
+    ListaK = tuple('K' + str(i) for i in range(5, 15))
 
-    ListaL=tuple('L'+str(i) for i in range(6,14))
+    ListaL = tuple('L' + str(i) for i in range(6, 14))
 
     return render_to_response('cliente/butacas.html', locals(), context_instance=RequestContext(request))
 
 
-def PaginaReservacion(request):
+def PaginaReservacion(request, butacas, tickets, total):
     titulo = "Reservacion"
     if 'cliente' in request.session and request.session['cliente'] is not None:
         logeado = True
@@ -206,10 +221,15 @@ def PaginaReservacion(request):
     else:
         logeado = False
 
+    asientos = json.loads(butacas)
+
+    request.session['tickets'] = tickets
+    request.session['total'] = total
+
     return render_to_response('cliente/reservacion.html', locals(), context_instance=RequestContext(request))
 
 
-def PaginaConfirmacion(request):
+def PaginaConfirmacion(request, butacas, email):
     titulo = "Confirmación"
     if 'cliente' in request.session and request.session['cliente'] is not None:
         logeado = True
@@ -217,6 +237,40 @@ def PaginaConfirmacion(request):
         nombre = cliente["nombres"]
     else:
         logeado = False
+    idCartelera = request.session['idCartelera']
+    idCliente = str(cliente['idCliente'])
+    fecha = request.session['fechaBD']
+    asientos = json.loads(butacas)
+
+    butacas = '"reservabutacas":' + butacas
+    cadena = '{"idCartelera":' + idCartelera + ',"fechaReserva":"' + fecha + '","idCliente":' + \
+             idCliente + ',"estado":"Vigente",' + butacas + '}'
+
+    reserva = ReservarButacas(cadena)
+
+    fecha = request.session['fechaNormal']
+
+    idCartelera = request.session['idCartelera']
+    idCiudad = request.session['idCiudad']
+
+    hora = request.session['hora']
+
+    tickets = request.session['tickets']
+    total = request.session['total']
+
+    cartelera = BuscarCartelera(idCartelera)
+    sala = cartelera["sala"]
+    # ciudad=BuscarCiudad(idCiudad)
+    complejo = sala["complejo"]
+    pelicula = cartelera["pelicula"]
+
+    del request.session['idCartelera']
+    del request.session['idCiudad']
+    del request.session['fechaNormal']
+    del request.session['fechaBD']
+    del request.session['hora']
+    del request.session['tickets']
+    del request.session['total']
 
     return render_to_response('cliente/confirmacion.html', locals(), context_instance=RequestContext(request))
 

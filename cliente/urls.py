@@ -25,9 +25,9 @@ urlpatterns = patterns('',
 
                        url(r'^complejosPorCiudad/$', ComplejosPorCiudad),
 
-                       url(r'^cartelera/butacas/(\d{2}/\d{2}/\d{4})/(\d{1,6})/(\d{2}:\d{2})/$', PaginaButacas),
-                       url(r'cartelera/butacas/reservacion/$', PaginaReservacion),
-                       url(r'cartelera/butacas/reservacion/confirmacion/$', PaginaConfirmacion),
+                       url(r'^cartelera/butacas/(\d{2}/\d{2}/\d{4})/(\d{1,6})/(\d{2}:\d{2})/(\d{1,6})/$', PaginaButacas),
+                       url(r'^cartelera/butacas/reservacion/(\S+)/(\d{1,2})/(\d{1,4})/$', PaginaReservacion),
+                       url(r'cartelera/butacas/reservacion/confirmacion/(\S+)/(\S+)/$', PaginaConfirmacion),
 
                        url(r'profile/$', PaginaProfile),
 

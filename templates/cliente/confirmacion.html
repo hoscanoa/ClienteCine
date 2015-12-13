@@ -41,28 +41,32 @@
                     <div class="ticket__inner">
 
                         <div class="ticket-secondary">
-							<span class="ticket__item">Ticket number <strong
-                                    class="ticket__number">a126bym4</strong></span> <span
-                                class="ticket__item ticket__date">25/10/2013</span> <span
-                                class="ticket__item ticket__time">17:45</span> <span
-                                class="ticket__item">Cinema: <span class="ticket__cinema">Cineworld</span></span>
-							<span class="ticket__item">Hall: <span
-                                    class="ticket__hall">Visconti</span></span> <span
-                                class="ticket__item ticket__price">price: <strong
-                                class="ticket__cost">$60</strong></span>
+							<span class="ticket__item">Número de Ticket <strong
+                                    class="ticket__number">{{ reserva.numeroTicket }}</strong></span> <span
+                                class="ticket__item ticket__date">{{ fecha }}</span> <span
+                                class="ticket__item ticket__time">{{ hora }}</span> <span
+                                class="ticket__item">Ciudad: <span
+                                class="ticket__cinema">{{ ciudad.nombre }}</span></span>
+							<span class="ticket__item">Complejo: <span
+                                    class="ticket__hall">{{ complejo.nombre }}</span></span> <span
+                                class="ticket__item ticket__price">Precio: <strong
+                                class="ticket__cost">S/{{ total }}</strong></span>
                         </div>
 
                         <div class="ticket-primery">
-							<span class="ticket__item ticket__item--primery ticket__film">Film<br>
-							<strong class="ticket__movie">The Fifth Estate (2013)</strong></span> <span
-                                class="ticket__item ticket__item--primery">Sits: <span
-                                class="ticket__place">11F, 12F, 13F</span></span>
+							<span class="ticket__item ticket__item--primery ticket__film" style="margin-bottom: -40px;">Película<br>
+							    <strong class="ticket__movie"
+                                        style="margin-right: 150px;">{{ pelicula.nombre }}</strong>
+                                <img src="http://chart.apis.google.com/chart?cht=qr&chs=120x120&chl={{ reserva.numeroTicket }}%20al%20cine&chld=H|0">
+                            </span>
+                            <span class="ticket__item ticket__item--primery">Butaca(s):
+                                <span class="ticket__place">{% for a in asientos %}{{ a.butaca }}/{% endfor %}</span>
+                            </span>
                         </div>
-
 
                     </div>
                     <div class="ticket__indecator indecator--post">
-                        <div class="indecator-text post--text">online ticket</div>
+                        <div class="indecator-text post--text">Ticket Online</div>
                     </div>
                 </div>
             </div>

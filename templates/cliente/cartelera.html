@@ -63,64 +63,66 @@
 
             </div>
             {% for pelicula in cartelera %}
-                    <!-- Movie preview item -->
-                    <div class="movie movie--preview movie--full release">
-                        <div class="col-sm-3 col-md-2 col-lg-2">
-                            <div class="movie__images">
-                                <img alt='' src="{{ pelicula.urlImagen }}">
-                            </div>
+                <!-- Movie preview item -->
+                <div class="movie movie--preview movie--full release">
+                    <div class="col-sm-3 col-md-2 col-lg-2">
+                        <div class="movie__images">
+                            <img alt='' src="{{ pelicula.urlImagen }}">
                         </div>
-
-                        <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
-                            <a href='movie-page-full.html' class="movie__title link--huge">{{ pelicula.nombre }}</a>
-
-                            <p class="movie__time">{{ pelicula.duracion }} min</p>
-
-                            <p class="movie__option">
-                                <strong>País: </strong>{{ pelicula.pais }}
-                            </p>
-
-                            <p class="movie__option">
-                                <strong>Fecha de Estreno: </strong>{{ pelicula.fecha }}
-                            </p>
-
-                            <p class="movie__option">
-                                <strong>Director: </strong>{{ pelicula.director }}
-                            </p>
-
-                            <p class="movie__option">
-                                <strong>Actores: </strong>{{ pelicula.actores }}
-                            </p>
-
-                            <p class="movie__option">
-                                <strong>Sinopsis: </strong>{{ pelicula.sinopsis }}
-                            </p>
-
-                            <div class="movie__btns">
-                                <a fecha="{{ fecha }}" idPelicula="{{ pelicula.idPelicula }}" class="btn btn-md btn--warning btnReservar">Reservar</a>
-                            </div>
-                        </div>
-
-                        <div class="clearfix"></div>
-
-                        <!-- Time table (choose film start time)-->
-                        <div class="time-select" style="display-block;">
-                            <div class="time-select__group group--first">
-                                <div class="col-sm-4">
-                                    <p class="time-select__place"><strong>Horarios</strong></p>
-                                </div>
-                                <ul class="col-sm-8 items-wrap">
-                                    {% for horario in pelicula.carteleras %}
-                                        <li class="time-select__item" data-time="{{ horario.horaInicio }}"
-                                             idPelicula="{{ pelicula.idPelicula }}" idSala="{{ horario.idSala }}">{{ horario.horaInicio }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- end time table-->
                     </div>
-                    <hr>
-                    <!-- end movie preview item -->
+
+                    <div class="col-sm-9 col-md-10 col-lg-10 movie__about">
+                        <a href='movie-page-full.html' class="movie__title link--huge">{{ pelicula.nombre }}</a>
+
+                        <p class="movie__time">{{ pelicula.duracion }} min</p>
+
+                        <p class="movie__option">
+                            <strong>País: </strong>{{ pelicula.pais }}
+                        </p>
+
+                        <p class="movie__option">
+                            <strong>Fecha de Estreno: </strong>{{ pelicula.fecha }}
+                        </p>
+
+                        <p class="movie__option">
+                            <strong>Director: </strong>{{ pelicula.director }}
+                        </p>
+
+                        <p class="movie__option">
+                            <strong>Actores: </strong>{{ pelicula.actores }}
+                        </p>
+
+                        <p class="movie__option">
+                            <strong>Sinopsis: </strong>{{ pelicula.sinopsis }}
+                        </p>
+
+                        <div class="movie__btns">
+                            <a fecha="{{ fecha }}" idPelicula="{{ pelicula.idPelicula }}"
+                               class="btn btn-md btn--warning btnReservar">Reservar</a>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <!-- Time table (choose film start time)-->
+                    <div class="time-select" style="display-block;">
+                        <div class="time-select__group group--first">
+                            <div class="col-sm-4">
+                                <p class="time-select__place"><strong>Horarios</strong></p>
+                            </div>
+                            <ul class="col-sm-8 items-wrap">
+                                {% for horario in pelicula.carteleras %}
+                                    <li class="time-select__item" data-time="{{ horario.horaInicio }}"
+                                        idCartelera="{{ horario.idCartelera }}" idPelicula="{{ pelicula.idPelicula }}"
+                                        idSala="{{ horario.idSala }}">{{ horario.horaInicio }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- end time table-->
+                </div>
+                <hr>
+                <!-- end movie preview item -->
             {% empty %}
                 <h3>Disculpe. No existe cartelera para esta fecha</h3>
             {% endfor %}
@@ -169,19 +171,18 @@
             });
 
             $(".time-select__item").on('click', function () {
+                idCartelera = $(this).attr('idCartelera');
                 idPelicula = $(this).attr('idPelicula');
-                idSala= $(this).attr('idSala');
-                hora= $(this).attr('data-time');
+                idSala = $(this).attr('idSala');
+                hora = $(this).attr('data-time');
             });
 
             $(".btnReservar").on('click', function () {
-                if(idPelicula==$(this).attr('idPelicula'))
-                {
-                    fecha=$(this).attr('fecha');
-                    $(this).attr('href','/cartelera/butacas/'+fecha+"/"+idSala+"/"+hora);
+                if (idPelicula == $(this).attr('idPelicula')) {
+                    fecha = $(this).attr('fecha');
+                    $(this).attr('href', '/cartelera/butacas/' + fecha + "/" + idSala + "/" + hora + "/" + idCartelera);
                 }
-                else
-                {
+                else {
                     alert("Debe elegir un horario para la película antes de continuar");
                     return false;
                 }

@@ -25,7 +25,7 @@
     <section class="container">
         <div class="order-container">
             <div class="order">
-                <img class="order__images" alt='' src="{%  static "images/tickets.png"%}">
+                <img class="order__images" alt='' src="{% static "images/tickets.png" %}">
 
                 <p class="order__title">
                     Reservando </span>
@@ -44,37 +44,39 @@
                 <h2 class="page-heading">Precio</h2>
                 <ul class="book-result">
                     <li class="book-result__item">Tickets: <span
-                            class="book-result__count booking-ticket">3</span></li>
-                    <li class="book-result__item">One item price: <span
-                            class="book-result__count booking-price">$20</span></li>
-                    <li class="book-result__item">Reservation fee: <span
-                            class="book-result__count">$3</span></li>
+                            class="book-result__count booking-ticket">{{ tickets }}</span></li>
+
+                    <li class="book-result__item">Butacas: <span
+                            class="book-result__count booking-ticket">
+                        {% for a in asientos %}
+                            {{ a.butaca }} /
+                        {% endfor %}</span></li>
+
                     <li class="book-result__item">Total: <span
-                            class="book-result__count booking-cost">$69</span></li>
+                            class="book-result__count booking-cost">S/{{ total }}</span></li>
                 </ul>
 
-                <h2 class="page-heading">Informacion</h2>
+                <h2 class="page-heading">Información</h2>
 
                 <form id='contact-info' method='post' novalidate=""
                       class="form contact-info">
                     <div class="contact-info__field contact-info__field-mail">
-                        <input type='email' name='user-mail' placeholder='Your email'
-                               class="form__mail">
+                        <input id="email" type='email' name='user-mail' placeholder='Email'
+                               class="form__mail" value="{{ cliente.email }}">
                     </div>
                     <div class="contact-info__field contact-info__field-tel">
-                        <input type='tel' name='user-tel' placeholder='Phone number'
-                               class="form__mail">
+                        <input id="celular" type='tel' name='user-tel' placeholder='Celular'
+                               class="form__mail" value="{{ cliente.celular }}">
                     </div>
                 </form>
 
-                <p class="reservation-message">Fill your contact information to
-                    recieve your reservation code. Reserved tickets are removed 20
-                    minutes befor the session is due to start</p>
+                <p class="reservation-message">Complete su información de contacto para recibir su código de
+                    reservación. Las Reservas de tickets son removidas 20 minutos antes del inicio de la función.</p>
 
             </div>
 
             <div class="order">
-                <a href="/cartelera/butacas/reservacion/confirmacion/"
+                <a id="btnConfirmacion" href="#" butacas="{{ butacas }}"
                    class="btn btn-md btn--warning btn--wide">Reservar</a>
             </div>
 
@@ -89,33 +91,10 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
-            init_MovieList();
-            $("#idComplejo").selectbox();
-            $("#idCiudad").selectbox({
-                onChange: function (val, inst) {
-                    var idCiudad = val;
-                    var fecha = $('#datepicker').val();
-
-                    $.getJSON('/complejosPorCiudad', {idCiudad: idCiudad, fecha: fecha}, function (response) {
-                        $("#idComplejo").selectbox("detach");
-                        llenarSelect($("#idComplejo"), response.complejos);
-                        $("#idComplejo").selectbox({
-                            onChange: function (val2, inst2) {
-                                var idCiudad = $('#idCiudad').val();
-                                var idComplejo = val2;
-                                var fecha = $('#datepicker').val();
-
-                                $.getJSON('/carteleraPorComplejosYPorCiudad', {
-                                    idCiudad: idCiudad,
-                                    idComplejo: idComplejo,
-                                    fecha: fecha,
-                                }, function (response) {
-                                    console.log("trae cartelera");
-                                });
-                            }
-                        });
-                    });
-                }
+            $("#btnConfirmacion").on('click', function () {
+                var butacas = $(this).attr('butacas');
+                var correo = $("#email").val();
+                $(this).attr('href', '/cartelera/butacas/reservacion/confirmacion/' + butacas + '/' + correo);
             });
         });
     </script>
