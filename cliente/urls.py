@@ -21,11 +21,11 @@ urlpatterns = patterns('',
                        url(r'actualizarCliente/$', ActualizarCliente.as_view()),
 
                        url(r'salir/$', Salir),
-                       url(r'cartelera/', PaginaCartelera),
+                       url(r'^cartelera/(\d{1,6})/(\d{1,6})/(\d{2}/\d{2}/\d{4})/$', PaginaCartelera),
 
                        url(r'^complejosPorCiudad/$', ComplejosPorCiudad),
 
-                       url(r'cartelera/butacas/$', PaginaButacas),
+                       url(r'^cartelera/butacas/(\d{2}/\d{2}/\d{4})/(\d{1,6})/(\d{2}:\d{2})/$', PaginaButacas),
                        url(r'cartelera/butacas/reservacion/$', PaginaReservacion),
                        url(r'cartelera/butacas/reservacion/confirmacion/$', PaginaConfirmacion),
 

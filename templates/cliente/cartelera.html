@@ -62,8 +62,7 @@
                         >Ver Cartelera</a>
 
             </div>
-            {% for pelicula in catelera %}
-                <form action="butacas/" method="get">
+            {% for pelicula in cartelera %}
                     <!-- Movie preview item -->
                     <div class="movie movie--preview movie--full release">
                         <div class="col-sm-3 col-md-2 col-lg-2">
@@ -98,7 +97,7 @@
                             </p>
 
                             <div class="movie__btns">
-                                <input type="submit" href="butacas/" class="btn btn-md btn--warning" value="Reservar"/>
+                                <a fecha="{{ fecha }}" idPelicula="{{ pelicula.idPelicula }}" class="btn btn-md btn--warning btnReservar">Reservar</a>
                             </div>
                         </div>
 
@@ -111,9 +110,9 @@
                                     <p class="time-select__place"><strong>Horarios</strong></p>
                                 </div>
                                 <ul class="col-sm-8 items-wrap">
-                                    {% for horarios in pelicula.carteleras %}
-                                        <li class="time-select__item" data-time='{{ horarios.horaInicio }}'
-                                            idCartelera='{{ horarios.idCartelera }}'>{{ horarios.horaInicio }}</li>
+                                    {% for horario in pelicula.carteleras %}
+                                        <li class="time-select__item" data-time="{{ horario.horaInicio }}"
+                                             idPelicula="{{ pelicula.idPelicula }}" idSala="{{ horario.idSala }}">{{ horario.horaInicio }}</li>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -122,7 +121,6 @@
                     </div>
                     <hr>
                     <!-- end movie preview item -->
-                </form>
             {% empty %}
                 <h3>Disculpe. No existe cartelera para esta fecha</h3>
             {% endfor %}
@@ -135,6 +133,11 @@
 {% endblock %}
 {% block scripts %}
     <script type="text/javascript">
+
+        var idCartelera;
+        var idPelicula;
+        var idSala;
+        var hora;
 
         $(document).ready(function () {
             init_MovieList();
@@ -162,9 +165,28 @@
                 idComplejo = $('#idComplejo').val();
                 fecha = $("#datepicker").val();
 
-                $(this).attr('href', "?idCiudad=" + idCiudad + "&idComplejo=" + idComplejo + "&fecha=" + fecha);
-
+                $(this).attr('href', "/cartelera/" + idCiudad + "/" + idComplejo + "/" + fecha);
             });
+
+            $(".time-select__item").on('click', function () {
+                idPelicula = $(this).attr('idPelicula');
+                idSala= $(this).attr('idSala');
+                hora= $(this).attr('data-time');
+            });
+
+            $(".btnReservar").on('click', function () {
+                if(idPelicula==$(this).attr('idPelicula'))
+                {
+                    fecha=$(this).attr('fecha');
+                    $(this).attr('href','/cartelera/butacas/'+fecha+"/"+idSala+"/"+hora);
+                }
+                else
+                {
+                    alert("Debe elegir un horario para la película antes de continuar");
+                    return false;
+                }
+            });
+
 
         });
     </script>

@@ -120,7 +120,7 @@ class ActualizarCliente(TemplateView):
         return HttpResponse(response, content_type="application/json")
 
 
-def PaginaCartelera(request):
+def PaginaCartelera(request, idCiudad, idComplejo, fecha):
     titulo = "Cartelera"
     if 'cliente' in request.session and request.session['cliente'] is not None:
         logeado = True
@@ -133,21 +133,16 @@ def PaginaCartelera(request):
     webService = suds.client.Client(servicio.URL_CIUDAD_WS)
     ciudades = json.loads(webService.service.listar())
 
-    if 'idCiudad' in request.GET:
-        idCiudad = request.GET['idCiudad']
-    else:
+    if int(idCiudad) == 0:
         idCiudad = str(ciudades[0]["idCiudad"])
 
     # Complejos de la primera ciudad
     complejos = Complejos(idCiudad)
 
-    if 'idComplejo' in request.GET:
-        idComplejo = int(request.GET['idComplejo'])
-    else:
+    if int(idComplejo) == 0:
         idComplejo = complejos[0]["idComplejo"]
 
-    if 'fecha' in request.GET:
-        fecha = request.GET['fecha']
+    if fecha != "01/01/2000":
         f = time.strptime(fecha, "%d/%m/%Y")
         fechaServicio = fechaServicio = str(f[0]) + "-" + str(f[1]) + "-" + str(f[2])
     else:
@@ -155,7 +150,8 @@ def PaginaCartelera(request):
         fechaServicio = time.strftime("%y-%m-%d")
 
     # Cartelera por defecto
-    catelera = Cartelera(idComplejo, fechaServicio)
+    cartelera = Cartelera(idComplejo, fechaServicio)
+
     return render_to_response('cliente/cartelera.html', locals(), context_instance=RequestContext(request))
 
 
@@ -167,7 +163,7 @@ def ComplejosPorCiudad(request):
     return HttpResponse(response, content_type="application/json")
 
 
-def PaginaButacas(request):
+def PaginaButacas(request, fecha, idSala, hora):
     titulo = "Butacas"
     if 'cliente' in request.session and request.session['cliente'] is not None:
         logeado = True
@@ -175,6 +171,28 @@ def PaginaButacas(request):
         nombre = cliente["nombres"]
     else:
         logeado = False
+
+    fecha = time.strptime(fecha, "%d/%m/%Y")
+    fecha=str(fecha[0])+'-'+str(fecha[1])+'-'+str(fecha[2])
+    idSala = int(idSala)
+
+    ocupados = ButacasOcupadas(fecha, idSala, hora)
+
+    ListaA=tuple('A'+str(i) for i in range(2,18))
+
+    ListaB=tuple('B'+str(i) for i in range(1,19))
+    ListaC=tuple('C'+str(i) for i in range(1,19))
+    ListaD=tuple('D'+str(i) for i in range(1,19))
+    ListaE=tuple('E'+str(i) for i in range(1,19))
+    ListaF=tuple('F'+str(i) for i in range(1,19))
+    ListaG=tuple('G'+str(i) for i in range(1,19))
+
+    ListaI=tuple('I'+str(i) for i in range(3,17))
+
+    ListaJ=tuple('J'+str(i) for i in range(5,15))
+    ListaK=tuple('K'+str(i) for i in range(5,15))
+
+    ListaL=tuple('L'+str(i) for i in range(6,14))
 
     return render_to_response('cliente/butacas.html', locals(), context_instance=RequestContext(request))
 

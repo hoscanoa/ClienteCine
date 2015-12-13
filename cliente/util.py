@@ -36,3 +36,8 @@ def Cartelera(idComplejo, fecha):
     respuesta = webService.service.listar(idComplejo, fecha)
     return json.loads(respuesta)
 
+def ButacasOcupadas(fecha, idSala, hora):
+    webService = suds.client.Client(servicio.URL_RESERVA_BUTACA_WS)
+    respuesta = webService.service.verificaReservaButacas(fecha, idSala, hora)
+    return json.loads(respuesta)
+

@@ -678,7 +678,7 @@ function init_BookingTwo() {
                         break;
                 }
 
-                $('.checked-result').text('$' + sum);
+                $('.checked-result').text('S/' + sum);
             }
         }
 
@@ -702,7 +702,7 @@ function init_BookingTwo() {
                     break;
             }
 
-            $('.checked-result').text('$' + sum)
+            $('.checked-result').text('S/' + sum)
         }
 
         //data element init
@@ -828,7 +828,7 @@ function init_BookingTwo() {
                 break;
         }
 
-        $('.checked-result').text('$' + sum);
+        $('.checked-result').text('S/' + sum);
 
 
         $(this).removeClass('btn--warning').unbind('click', ChoosePlace);
@@ -868,10 +868,8 @@ function init_BookingTwo() {
                         break;
                 }
 
-                $('.checked-result').text('$' + sum);
+                $('.checked-result').text('S/' + sum);
             }
-
-
         })
     }
 
@@ -1137,22 +1135,22 @@ function init_MovieList() {
     };
     $.datepicker.setDefaults($.datepicker.regional['es']);
 
-/*
-    $(".datepicker__input").datepicker({
-        showOtherMonths: true,
-        selectOtherMonths: true,
-        prevText: '<Ant',
-        nextText: 'Sig>',
-        currentText: 'Hoy',
-        showAnim: "fade",
-        monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
-        monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-        dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'],
-        dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sab'],
-        dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-        firstDay: 1
-    });
-*/
+    /*
+     $(".datepicker__input").datepicker({
+     showOtherMonths: true,
+     selectOtherMonths: true,
+     prevText: '<Ant',
+     nextText: 'Sig>',
+     currentText: 'Hoy',
+     showAnim: "fade",
+     monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+     monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+     dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sabado'],
+     dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Juv', 'Vie', 'Sab'],
+     dayNamesMin: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
+     firstDay: 1
+     });
+     */
     $(document).click(function (e) {
         var ele = $(e.target);
         if (!ele.hasClass("datepicker__input") && !ele.hasClass("ui-datepicker") && !ele.hasClass("ui-icon") && !$(ele).parent().parents(".ui-datepicker").length) {
