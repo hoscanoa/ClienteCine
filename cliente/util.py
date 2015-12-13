@@ -24,7 +24,7 @@ def send_mail(template_name, email_to, context):
     mandrill_client.messages.send_template(template_name, [], message)
 
 
-# send_mail('template-1', ["sendto@email.com"], context={'Name': "Bob Marley"})
+#send_mail('Sistemas Distribuidos - Registro Nuevo Cliente', ["hosscanoa@outlook.com"], context={'nombre': "Bob Marley"})
 
 
 def Complejos(idCiudad):
@@ -49,7 +49,6 @@ def ButacasOcupadas(fecha, idSala, hora):
 def ReservarButacas(cadena):
     webService = suds.client.Client(servicio.URL_RESERVA_WS)
     respuesta = webService.service.registrar(cadena)
-    print respuesta
     return json.loads(respuesta)
 
 
@@ -61,4 +60,14 @@ def BuscarCartelera(idCartelera):
 def BuscarCiudad(idCiudad):
     webService = suds.client.Client(servicio.URL_CIUDAD_WS)
     respuesta = webService.service.buscar(int(idCiudad))
+    return json.loads(respuesta)
+
+def HisorialReservas(idCliente):
+    webService = suds.client.Client(servicio.URL_RESERVA_WS)
+    respuesta = webService.service.buscarPorCliente(int(idCliente))
+    return json.loads(respuesta)
+
+def BuscarReserva(idReserva):
+    webService = suds.client.Client(servicio.URL_RESERVA_WS)
+    respuesta = webService.service.buscar(int(idReserva))
     return json.loads(respuesta)

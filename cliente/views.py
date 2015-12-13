@@ -84,7 +84,8 @@ class RegistrarCliente(TemplateView):
         response = json.dumps({'logeado': logeado})
 
         try:
-            send_mail('Sistemas Distribuidos - Registro Nuevo Cliente', cliente["email"], context={'nombre': cliente["nombres"]})
+            send_mail('Sistemas Distribuidos - Registro Nuevo Cliente', [cliente["email"]],
+                      context={'nombre': cliente["nombres"]})
         except:
             print 'falló envio de correo'
             raise
@@ -264,6 +265,27 @@ def PaginaConfirmacion(request, butacas, email):
     complejo = sala["complejo"]
     pelicula = cartelera["pelicula"]
 
+    try:
+        cad=''
+        for a in asientos:
+            cad+=a["butaca"]+"/"
+
+        send_mail('Sistemas Distribuidos - Registro Reserva',
+                  [cliente["email"]],
+                  context={'nombre': cliente["nombres"],
+                           'pelicula': pelicula["nombre"],
+                           #'ciudad': ciudad.nombre,
+                           'ciudad': 'ciudad',
+                           'complejo': complejo["nombre"],
+                           'fecha': fecha,
+                           'hora': hora,
+                           'sala': sala["idSala"],
+                           'butacas': cad,
+                           'numero': reserva["numeroTicket"]})
+    except:
+        print 'falló envio correo de reserva'
+        raise
+
     del request.session['idCartelera']
     del request.session['idCiudad']
     del request.session['fechaNormal']
@@ -282,6 +304,30 @@ def PaginaProfile(request):
         cliente = request.session['cliente']
         nombre = cliente["nombres"]
         return render_to_response('cliente/profile.html', locals(), context_instance=RequestContext(request))
+    else:
+        logeado = False
+        return PaginaInicio(request)
+
+
+def PaginaHistorial(request):
+    titulo = "Historial"
+    if 'cliente' in request.session and request.session['cliente'] is not None:
+        logeado = True
+        cliente = request.session['cliente']
+        nombre = cliente["nombres"]
+
+        historial = HisorialReservas(cliente["idCliente"])
+        reservaciones=[]
+        for h in historial:
+            reserva=BuscarReserva(h["idReserva"])
+
+            total=0
+            for b in reserva["reservabutacas"]:
+                total+=int(b["precio"])
+            reserva["total"]=total
+            reservaciones.append(reserva)
+
+        return render_to_response('cliente/historial.html', locals(), context_instance=RequestContext(request))
     else:
         logeado = False
         return PaginaInicio(request)

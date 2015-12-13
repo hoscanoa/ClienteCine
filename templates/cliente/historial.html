@@ -1,0 +1,106 @@
+{% extends "cliente/template/base.html" %}
+{% load static %}
+{% block perfil %}
+    {% if not logeado %}
+        <div class="control-panel">
+            <a href="#" class="btn btn--sign login-window">Log in</a>
+        </div>
+    {% else %}
+        <div class="control-panel">
+            <div class="auth auth--home">
+                <a href="#" class="btn btn--sign btn--singin"><i class="fa fa-user" style="color:gray"></i> {{ nombre }}
+                </a>
+                <ul class="auth__function">
+                    <li><a href="perfil" class="auth__function-item">Perfil</a></li>
+                    <li><a href="salir" class="auth__function-item">Salir</a></li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <!-- Main content -->
+
+    <section class="container">
+        <div class="order-container">
+            <div class="order">
+                <img class="order__images" alt='' src="{% static "images/tickets.png" %}">
+
+                <p class="order__title">
+                    Historial de Reservaciones<br>
+                    <span class="order__descript">Aquí hallará el historial de reservaciones que ha realizado</span>
+                </p>
+            </div>
+
+            {% for reserva in reservaciones %}
+                <div class="ticket">
+                    <div class="ticket-position">
+                        <div class="ticket__indecator indecator--pre">
+                            <div class="indecator-text pre--text">Ticket online</div>
+                        </div>
+                        <div class="ticket__inner">
+
+                            <div class="ticket-secondary">
+							<span class="ticket__item">Número de Ticket <strong
+                                    class="ticket__number">{{ reserva.numeroTicket }}</strong></span> <span
+                                    class="ticket__item ticket__date">{{ reserva.fechaReserva }}</span> <span
+                                    class="ticket__item ticket__time">{{ reserva.cartelera.hora }}</span> <span
+                                    class="ticket__item">Ciudad: <span
+                                    class="ticket__cinema">{{ ciudad.nombre }}</span></span>
+							<span class="ticket__item">Complejo: <span
+                                    class="ticket__hall">{{ reserva.cartelera.sala.complejo.nombre }}</span></span>
+                            <span class="ticket__item">Sala: <span
+                                    class="ticket__hall">{{ reserva.cartelera.sala.numero }}</span></span>
+                            <span
+                                    class="ticket__item ticket__price">Precio: <strong
+                                    class="ticket__cost">S/{{ reserva.total }}</strong></span>
+                            </div>
+
+                            <div class="ticket-primery">
+							<span class="ticket__item ticket__item--primery ticket__film" style="margin-bottom: -40px;">Película<br>
+							    <strong class="ticket__movie"
+                                        style="margin-right: 150px;">{{ reserva.cartelera.pelicula.nombre }}</strong>
+                                <img src="http://chart.apis.google.com/chart?cht=qr&chs=120x120&chl={{ reserva.numeroTicket }}%20al%20cine&chld=H|0">
+                            </span>
+                            <span class="ticket__item ticket__item--primery">Butaca(s):
+                                <span class="ticket__place">{% for b in reserva.reservabutacas %}{{ b.butaca }}
+                                    /{% endfor %}</span>
+                            </span>
+                            </div>
+
+                        </div>
+                        <div class="ticket__indecator indecator--post">
+                            <div class="indecator-text post--text">Ticket Online</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ticket-control">
+                    <a id="btnPrint" href="#" target="_blank" class="watchlist list--print">Imprimir</a>
+                </div>
+
+
+
+            {% empty %}
+                <h3>Aún no ha realizado ninguna reservación</h3>
+            {% endfor %}
+        </div>
+    </section>
+
+    <div class="clearfix"></div>
+
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            init_MovieList();
+
+            $('#btnPrint').on('click', function () {
+                window.print();
+                return false;
+            })
+        });
+    </script>
+{% endblock %}

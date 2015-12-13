@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 from .views import PaginaInicio, Logear, RegistrarCliente, \
     Salir, PaginaCartelera, ComplejosPorCiudad, PaginaButacas, \
-    PaginaReservacion, PaginaConfirmacion, PaginaProfile, ActualizarCliente
+    PaginaReservacion, PaginaConfirmacion, PaginaProfile, ActualizarCliente, PaginaHistorial
 
 urlpatterns = patterns('',
                        # Examples:
@@ -30,5 +30,7 @@ urlpatterns = patterns('',
                        url(r'cartelera/butacas/reservacion/confirmacion/(\S+)/(\S+)/$', PaginaConfirmacion),
 
                        url(r'profile/$', PaginaProfile),
+
+                       url(r'historial/$', PaginaHistorial),
 
                        )
