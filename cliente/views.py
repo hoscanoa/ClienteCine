@@ -161,7 +161,6 @@ def PaginaCartelera(request, idCiudad, idComplejo, fecha):
 
     # Cartelera por defecto
     cartelera = Cartelera(idComplejo, fechaServicio)
-    print cartelera
     return render_to_response('cliente/cartelera.html', locals(), context_instance=RequestContext(request))
 
 
